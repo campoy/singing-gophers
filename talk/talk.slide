@@ -157,6 +157,10 @@ Guess the song before playing it?
 
 * Wave forms
 
+.image img/waveforms.jpg
+
+* Wave forms
+
 .code squareWars.go /func .* sine/,/^}/
 
 .code squareWars.go /func .* square/,/^}/
@@ -201,34 +205,82 @@ Can we do partial evaluation of a function in Go?
 
 * Music notation
 
-Music notation
+* People have done it for centuries
 
-* Library
+.image img/notation0.jpg
 
-Code is available ... maybe?
+* People have done it for centuries
 
-* Demo
+.image img/notation1.jpg
 
-Reading and playing a melody
+* People have done it for centuries
 
-* Demo 2
+.image img/notation2.jpg
 
-loop and dj!
+* People have done it for centuries
 
-* Generating music
+.image img/notation3.png
+
+* People have done it for centuries
+
+.image img/notation4.png
+
+* Music notation for computers
+
+- MIDI
+
+- GUIDO
+
+- ABC
+
+* ABC
+
+A simpler way to use `MusicTeX`
+
+	X:1
+	T:The Legacy Jig
+	M:6/8
+	L:1/8
+	R:jig
+	K:G
+	GFG BAB | gfg gab | GFG BAB | d2A AFD |
+	GFG BAB | gfg gab | age edB |1 dBA AFD :|2 dBA ABd |:
+	efe edB | dBA ABd | efe edB | gdB ABd |
+	efe edB | d2d def | gfe edB |1 dBA ABd :|2 dBA AFD |]
+
+.image img/abc.png
+	
+* ABC parsing in Go
+
+Full lexer but simplified parser (for the moment)
+
+.link github.com/campoy/abc
+
+Following the lessons of "Lexical Scanning in Go", by Rob Pike
+
+.link golang.org/s/lexer
+
+* Last demo
+
+* Future work
 
 * Markov chains
 
-What are markov chains? Why are the useful?
+Do you remember my talk at TakeOff conf last year?
 
-* What can I predict in music
+- text-only chat roulette
+- bots generate random text using markov chains
 
-Intervals
+My idea: markov chains to generate music
 
-Rhythms
+- based on rhythms,
+- or intervals,
+- maybe even modulations.
 
-Progressions (chords)
+* MIDI
 
-* Demo (dj + markov chains)
+@rakyll has written [[github.com/rakyll/portmidi]]
 
-Only intervals, only rythms
+Integrate ABC and MIDI for transcription of melodies.
+
+* Questions?
