@@ -1,0 +1,234 @@
+Singing Gophers
+Music generation with Go
+
+Francesc Campoy Flores
+@francesc
+campoy@golang.org
+http://campoy.cat
+
+* Me, music, and Go
+
+- Software Engineer for 6 years (Amadeus NCE, Google MTV)
+
+- Gopher for 1,5 years
+
+- I'm an amateur (aka failed) musician since I was 8
+
+.image img/piano.png 400 400
+
+* What is Go?
+
+Go is a concurrent open source programming language developed at Google.
+
+Combines native compilation and static types with a lightweight dynamic feel.
+
+Fast, fun, and productive.
+
+* What is Go?
+
+Features:
+
+- Native code generation (compiled)
+- Statically typed
+- Composition via interfaces
+- Memory safe
+- Garbage collected
+- Native concurrency support
+- Excellent standard library
+- Great tools
+
+* Native concurrency support
+
+Go provides CSP-like concurrency primitives.
+
+- lightweight threads (goroutines)
+- typed thread-safe communication and synchronization (channels)
+
+The result: comprehensible concurrent code.
+
+.image img/funnelin.jpg 300 700
+
+* Go concurrency example
+
+.play fib.go
+
+* Audio in Go: PortAudio
+
+* PortAudio
+
+.image img/portaudio.png
+
+PortAudio is an open source computer library for audio playback and recording
+
+Cross-platform:
+
+- Windows
+- Mac OS X
+- POSIX
+- many others (via GCC/make)
+
+* PortAudio + cgo = PortAudio-Go
+
+PortAudio is written in C.
+
+Cgo enables the creation of Go packages that call C code.
+
+With those two ingredients, James Klaus created [[http://code.google.com/p/portaudio-go][PortAudio-Go]]
+
+* PortAudio-Go
+
+- Write a callback function, called when audio processing is needed.
+
+- Initialize the library and open a stream for audio I/O.
+
+- Start the stream. Your callback will be now called repeatedly in the background.
+
+- Stop the stream by returning 1 from your callback, or by calling a stop function.
+
+- Close the stream and terminate the library.
+
+* PortAudio demo
+
+.code sine.go /main\(\)/,/^}/
+
+* PortAudio demo
+
+.play sine.go /type sine/,
+
+* Writing down frequencies
+
+* One note? Cool story, bro
+
+How to play different "notes"? Not a brand new topic
+
+_Temperament_: mapping between a note and its frequency
+
+- Pythagorean tuning
+- Meantone temperament
+- Well temperament (equal)
+
+* Equal temperament in a meme
+
+.image img/bach.jpg 500 500
+
+* Equal temperament
+
+The ratio of frequencies for all semitones is the same
+
+	freq(D3)/freq(C#3) == freq(D#3)/freq(D3)
+
+A note an octave higher has double frequency
+	
+	freq(C4) = 2 * freq(C3)
+
+A note an octave higher is 12 semitones higher
+
+.image img/scale.png
+
+If you do the maths, if b is a semitone higher than a:
+
+	freq(b)/freq(a) = 2 ^ (1/12)
+
+Or, if b is n semitones higher than a:
+
+	freq(b)/freq(a) = 2 ^ (n/12)
+
+* Some notes
+
+_Legato_: notes are slurred
+
+.play notes.go /start notes/,/}/
+
+_Staccato_: notes are separated
+
+.play notesSilent.go /start notes/,/}/
+
+* Better demo
+
+Guess the song before playing it?
+
+.play sineWars.go /notes/,/end_notes/
+
+* Why does a piano doesn't sound like a guitar?
+
+* Wave forms
+
+.image img/waves.png 550 600
+
+* Wave forms
+
+.code squareWars.go /func .* sine/,/^}/
+
+.code squareWars.go /func .* square/,/^}/
+
+* Wave forms
+
+.code squareWars.go /func .* sawtooth/,/^}/
+
+.code squareWars.go /func .* triangle/,/^}/
+
+* Bestest demo
+
+.play squareWars.go /forms/,/newWave/
+
+Why does square sound louder than sine?
+
+* Interlude: currying in Go?
+
+We have defined a methods per wave shape.
+
+.code squareWars.go /func .* sine/
+
+So we can make reference to those methods using the syntax:
+
+	(*wave).sine
+
+of type
+
+	func (*wave, [][]float32)
+
+but the callback has to be of type
+
+	func ([][]float32)
+
+Can we do partial evaluation of a function in Go?
+
+* Interlude: currying in Go (cont.)
+
+*YES,*WE*CAN!*
+
+.code squareWars.go /func call/,/^}/
+
+* Music notation
+
+Music notation
+
+* Library
+
+Code is available ... maybe?
+
+* Demo
+
+Reading and playing a melody
+
+* Demo 2
+
+loop and dj!
+
+* Generating music
+
+* Markov chains
+
+What are markov chains? Why are the useful?
+
+* What can I predict in music
+
+Intervals
+
+Rhythms
+
+Progressions (chords)
+
+* Demo (dj + markov chains)
+
+Only intervals, only rythms

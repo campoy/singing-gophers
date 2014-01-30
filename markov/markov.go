@@ -6,53 +6,36 @@ import (
 	"math/rand"
 )
 
-// rhythms are limited to 256 values
-// Base rhythm is 1/36
-// Negra: 36
-// Corchea: 18
-// Tresillo de corcheas: 12
-// Semicorchea: 9
-// Tresillo de semicorcheas: 6
-// Blanca 72
-// Redonda 144
-// Max: 255 ->
-// 255 - 144 (redonda)
-// 111 - 72 (blanca)
-// 39 - 36 (negra)
-// 3 (tresillo de fusas)
-type Duration byte
+type Value int8
 
-// A suite contains a suite of durations ... duh
-type suite []Duration
+type suite []Value
 
-func (ds suite) hash() hash {
-	bs := make([]byte, len(ds))
-	for i := range ds {
-		bs[i] = byte(ds[i])
+func (m suite) hash() string {
+	b := make([]byte, len(m))
+	for i := range m {
+		b[i] = byte(m[i])
 	}
-	return hash(bs)
+	return string(b)
 }
 
-type hash string
-
-type RythmChain struct {
-	after map[hash][]Duration
+type Chain struct {
+	after map[string]suite
 }
 
-func NewRhythmChain() *RythmChain {
-	return &RythmChain{make(map[hash][]Duration)}
+func NewChain() *Chain {
+	return &Chain{make(map[string]suite)}
 }
 
-func (c *RythmChain) Feed(ds ...Duration) {
-	for i, d := range ds {
+func (c *Chain) Feed(vs ...Value) {
+	for i, d := range vs {
 		for j := 0; j <= i; j++ {
-			h := suite(ds[j:i]).hash()
-			c.after[h] = append(c.after[h], d)
+			h := suite(vs[j:i]).hash()
+			c.after[h] = suite(append(c.after[h], d))
 		}
 	}
 }
 
-func (c *RythmChain) String() string {
+func (c *Chain) String() string {
 	w := new(bytes.Buffer)
 	for k, v := range c.after {
 		fmt.Fprintf(w, "%v\t: %v\n", []byte(k), v)
@@ -60,12 +43,12 @@ func (c *RythmChain) String() string {
 	return w.String()
 }
 
-func (c *RythmChain) After(ds ...Duration) []Duration {
-	return c.after[suite(ds).hash()]
+func (c *Chain) After(vs ...Value) []Value {
+	return c.after[suite(vs).hash()]
 }
 
-func (c *RythmChain) Generate(length, memory int) []Duration {
-	res := make([]Duration, 0, length)
+func (c *Chain) Generate(length, memory int) []Value {
+	res := make(suite, 0, length)
 	for i := 0; i < length; i++ {
 		prefStart := len(res) - memory
 		if prefStart < 0 {
