@@ -248,7 +248,7 @@ A simpler way to use `MusicTeX`
 	efe edB | dBA ABd | efe edB | gdB ABd |
 	efe edB | d2d def | gfe edB |1 dBA ABd :|2 dBA AFD |]
 
-.image img/abc.png
+.image img/abc.png 200 600
 	
 * ABC parsing in Go
 
@@ -284,3 +284,7 @@ My idea: markov chains to generate music
 Integrate ABC and MIDI for transcription of melodies.
 
 * Questions?
+
+Learn Go [[http://golang.org]]
+
+Slides of this talk [[http://campoy.cat/sing]]
